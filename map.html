@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Black Media Map | Center for Community Media</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <script src="https://npmcdn.com/csv2geojson@latest/csv2geojson.js"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;600&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;1,400&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Prata&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Domine:wght@400;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Rufina:wght@400;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,300;0,400;0,700;1,400&display=swap");
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      a {
+        text-decoration: none;
+        color: #398ab9;
+      }
+
+      .mapboxgl-popup {
+        padding-bottom: 5px;
+      }
+
+      .mapboxgl-popup-close-button {
+        display: none;
+      }
+
+      .mapboxgl-popup-content {
+        font: 1.25em/22px;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0 5px 10px rgb(0 0 0 / 0.2);
+        font: 1.25em/22px "Poppins", "Sans-Serif";
+      }
+
+      .mapboxgl-popup-content-wrapper {
+        padding: 1%;
+      }
+
+      .mapboxgl-popup-content .outlet {
+        background: #2d2926;
+        color: #ff8200;
+        margin: 0;
+        display: block;
+        padding: 13px 20px;
+        font-weight: 700;
+        font-size: 1.3em;
+        line-height: 1.2;
+      }
+
+      .mapboxgl-popup-content .outlet-info {
+        background: #fff;
+        margin: 0;
+        display: block;
+        padding: 10px 20px;
+        font-size: 1.1em;
+        font-weight: 400;
+        font-family: "Rufina", "Domine", "Roboto Slab", "serif";
+        line-height: 1.5;
+      }
+
+      .mapboxgl-popup-content .city {
+        color: #ffc00d;
+        font-size: 0.7em;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .mapboxgl-popup-content .location {
+        color: #eee;
+        font-size: 0.6em;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .mapboxgl-popup-content .notes {
+        color: #888888;
+        font-size: 0.9em;
+        font-weight: 600;
+        line-height: 1.2;
+        padding: 0 20px 10px 20px;
+      }
+
+      .mapboxgl-popup-content .bottom {
+        background: #2d2926;
+        margin: 0;
+        display: block;
+        height: 4px;
+      }
+
+      .mapboxgl-popup-content ul {
+        list-style-type: none; /* removes bullets */
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      hr {
+        border: 0;
+        height: 1px;
+        background: #d6d6d6;
+      }
+
+      .mapboxgl-container {
+        cursor: pointer;
+      }
+
+      .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+        margin-top: 0px;
+      }
+
+      .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+        border-bottom-color: #2d2926;
+      }
+
+      .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+        border-top-color: #2d2926;
+      }
+
+      .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+        border-bottom-color: #2d2926;
+      }
+
+      .geocoder {
+        position: absolute;
+        z-index: 1;
+        width: 55%;
+        left: 1em;
+        top: 10px;
+      }
+
+      .reset-zoom {
+        position: absolute;
+        z-index: 1;
+        right: 1em;
+        top: 110px;
+        background-color: #2d2926;
+        border: 1px solid #2d2926;
+        color: #fff;
+        padding: 0.6em 1em;
+        text-align: center;
+        text-decoration: none;
+        font: 700 0.8em "Poppins", "Sans-Serif";
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Code source: https://www.mapbox.com/impact-tools/sheet-mapper
+    -->
+    <div id="map"></div>
+    <button type="button" class="reset-zoom" onClick="reCenterMap()">RESET ZOOM</button>
+    <div id="geocoder" class="geocoder"></div>
+
+    <script>
+      const transformRequest = (url, resourceType) => {
+        const isMapboxRequest = url.slice(8, 22) === "api.mapbox.com" || url.slice(10, 26) === "tiles.mapbox.com"
+        return {
+          url: isMapboxRequest ? url.replace("?", "?pluginName=sheetMapper&") : url,
+        }
+      }
+
+      mapboxgl.accessToken = "pk.eyJ1IjoiamNjY20iLCJhIjoiY2wwMG1wanFrMDYzdTNrcGhtcDg4MXlzZyJ9.7xxGLWAu72x0_vKWTYJFJw"
+      const map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/jcccm/cl01j7waj001215quv3w9wwrr",
+        center: [-98.579, 39.128],
+        zoom: 4,
+        maxZoom: 13,
+        transformRequest: transformRequest,
+      })
+
+      $(document).ready(function () {
+        $.ajax({
+          type: "GET",
+          url: "https://docs.google.com/spreadsheets/d/1uvy43lqhO2lnEoUJiUwV4NSUqWL77fbjWYof35FbRp8/gviz/tq?tqx=out:csv&sheet=directory",
+          dataType: "text",
+          success: function (csvData) {
+            makeGeoJSON(csvData)
+          },
+        })
+
+        function makeGeoJSON(csvData) {
+          csv2geojson.csv2geojson(
+            csvData,
+            {
+              latfield: "Latitude",
+              lonfield: "Longitude",
+              delimiter: ",",
+            },
+            function (err, data) {
+              map.on("load", () => {
+                map.addSource("csvData", {
+                  type: "geojson",
+                  data: data,
+                  cluster: true,
+                  clusterMaxZoom: 7, // Max zoom to cluster points on
+                  clusterRadius: 65, // Radius of cluster when clustering (default 50)
+                })
+
+                map.addLayer({
+                  id: "clusters",
+                  type: "circle",
+                  source: "csvData",
+                  filter: ["has", "point_count"],
+                  paint: {
+                    // Yellow, 25px radius when point count is <20
+                    "circle-color": ["step", ["get", "point_count"], "#f2cc8f", 15, "#e07a5f", 40, "#81b29a"],
+                    "circle-radius": ["step", ["get", "point_count"], 25, 15, 30, 40, 35],
+                  },
+                })
+
+                map.addLayer({
+                  id: "cluster-count",
+                  type: "symbol",
+                  source: "csvData",
+                  filter: ["has", "point_count"],
+                  layout: {
+                    "text-field": "{point_count_abbreviated}",
+                    "text-font": ["Arial Unicode MS Bold"],
+                    "text-size": 16,
+                  },
+                })
+
+                map.addLayer({
+                  id: "unclustered-point",
+                  type: "circle",
+                  source: "csvData",
+                  filter: ["!", ["has", "point_count"]],
+                  paint: {
+                    "circle-color": [
+                      "match",
+                      ["get", "Type for Color"],
+                      "Newspaper",
+                      "#F25F5C",
+                      "Digital",
+                      "#FFC600",
+                      "Radio/Podcast",
+                      "#247BA0",
+                      "TV",
+                      "#70C1B3",
+                      "Magazine",
+                      "#8267BE",
+                      "#50514F",
+                    ],
+                    "circle-radius": 7,
+                    "circle-stroke-width": 2,
+                    "circle-stroke-color": "#fff",
+                  },
+                })
+
+                // inspect a cluster on click
+                map.on("click", "clusters", e => {
+                  const features = map.queryRenderedFeatures(e.point, {
+                    layers: ["clusters"],
+                  })
+                  const clusterId = features[0].properties.cluster_id
+                  map.getSource("csvData").getClusterExpansionZoom(clusterId, (err, zoom) => {
+                    if (err) return
+
+                    map.easeTo({
+                      center: features[0].geometry.coordinates,
+                      zoom: zoom,
+                    })
+                  })
+                })
+
+                // popup
+                map.on("click", "unclustered-point", e => {
+                  const coordinates = e.features[0].geometry.coordinates.slice()
+
+                  const website = e.features[0].properties["URL"]
+                    ? `<a href='` + e.features[0].properties["URL"] + `' target='_blank'>Website</a>`
+                    : `<span style='color:gray;'>Website unknown</span>`
+
+                  const location =
+                    e.features[0].properties["Approximate Location Only"] === "yes"
+                      ? "(Map location approximate)"
+                      : `<span style="display: none;"></span>`
+
+                  const city = e.features[0].properties["City"]
+                    ? e.features[0].properties["City"]
+                    : `<span style="display: none;"></span>`
+
+                  const notes = e.features[0].properties["Notes"]
+                    ? `<div class="notes"><hr />` + e.features[0].properties["Notes"] + `</div>`
+                    : `<span style="display: none;"></span>`
+
+                  const description =
+                    `<div class="outlet">` +
+                    e.features[0].properties.Outlet +
+                    `<br />` +
+                    `<div class="city">${city}</div>
+                    <div class="location">${location}</div>
+                    </div>` +
+                    `<div class="outlet-info">` +
+                    `<ul><li style="list-style-type: '📍 '">` +
+                    e.features[0].properties["Media Type"] +
+                    `</li><li style="list-style-type: '🧑🏾 '">` +
+                    e.features[0].properties["Audience: City/region"] +
+                    `</li><li style="list-style-type: '🌍 '"> ${website}</li></ul></div>${notes}<div class="bottom"></div>`
+
+                  // Ensure that if the map is zoomed out such that
+                  // multiple copies of the feature are visible, the
+                  // popup appears over the copy being pointed to.
+                  while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+                  }
+
+                  new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map)
+                })
+
+                map.on("mouseenter", "clusters", () => {
+                  map.getCanvas().style.cursor = "pointer"
+                })
+                map.on("mouseleave", "clusters", () => {
+                  map.getCanvas().style.cursor = ""
+                })
+
+                map.on("mouseenter", "unclustered-point", () => {
+                  map.getCanvas().style.cursor = "pointer"
+                })
+                map.on("mouseleave", "unclustered-point", () => {
+                  map.getCanvas().style.cursor = ""
+                })
+              })
+            }
+          )
+        }
+      })
+
+      // Geocoding control:
+      // https://docs.mapbox.com/help/getting-started/geocoding/
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        placeholder: "Search location",
+        marker: false,
+      })
+      document.getElementById("geocoder").appendChild(geocoder.onAdd(map))
+
+      // Zoom and rotation controls
+      map.addControl(new mapboxgl.NavigationControl())
+
+      // recenter map
+      const reCenterMap = () => {
+        map.flyTo({ center: [-98.579, 39.128], zoom: 4 })
+      }
+
+      // disable map zoom when scroll
+      map.scrollZoom.disable()
+    </script>
+  </body>
+</html>
