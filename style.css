@@ -130,9 +130,8 @@ ul.footer-cols {
 /* tablet */
 @media only screen and (min-width: 401px) and (max-width: 960px) {
   .width {
-    width: 75vw;
     margin: 0 auto;
-    padding: 0.75rem 0;
+    padding: 0.75rem 2rem;
   }
 
   h1 {
