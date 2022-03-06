@@ -157,8 +157,8 @@
       .reset-zoom {
         position: absolute;
         z-index: 1;
-        right: 1em;
-        top: 150px;
+        right: 10px;
+        top: 107px;
         background-color: #2d2926;
         border: 1px solid #2d2926;
         color: #fff;
@@ -166,6 +166,15 @@
         text-align: center;
         text-decoration: none;
         font: 700 0.8em "Poppins", "Sans-Serif";
+      }
+
+      .mapboxgl-ctrl-top-right .mapboxgl-ctrl-fullscreen {
+        position: absolute;
+        right: 1px;
+        top: 45px;
+        background-color: #fff;
+        border: 2px solid #dcdcdc;
+        border-radius: 3px;
       }
     </style>
   </head>
@@ -367,16 +376,23 @@
       // Zoom and rotation controls
       map.addControl(new mapboxgl.NavigationControl())
 
+      // fullscreen button
+      const fullscreen = map.addControl(new mapboxgl.FullscreenControl())
+
       // recenter map
       const reCenterMap = () => {
         map.flyTo({ center: [-98.579, 39.128], zoom: 4 })
       }
 
-      // disable map zoom when scroll
-      map.scrollZoom.disable()
+      // if (document.getElementById("fullscreen").length) {
+      //   alert("Element exists")
+      // } else {
+      //   document.querySelector("reset-zoom").style.color = "red"
+      //   //alert("Element does not exist")
+      // }
 
-      // full screen button
-      map.addControl(new mapboxgl.FullscreenControl())
+      // disable map zoom when scrolling
+      map.scrollZoom.disable()
     </script>
   </body>
 </html>
