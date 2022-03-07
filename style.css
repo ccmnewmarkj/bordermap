@@ -25,6 +25,12 @@ a {
   outline: 0; /* for iOS */
 }
 
+nav {
+  border-bottom: 0.75px solid #909090;
+  background-color: #f5f5f5;
+  padding: 0rem 1.75rem;
+}
+
 h1 {
   font-family: "Poppins", "sans-serif";
   font-weight: 700;
@@ -46,7 +52,7 @@ h1 {
   height: 2em;
 }
 
-.logo-container {
+.nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,37 +88,57 @@ img:hover.twitter-icon {
   font-size: 0.9em;
 }
 
-ul.nav-text {
+footer {
+  border-top: 0.75px solid #909090;
+  background-color: #f5f5f5;
+}
+
+.footer-element {
+  text-align: center;
+}
+
+.nav-menu a,
+.footer-element a {
+  text-decoration: none;
+  color: #fe8807;
+}
+
+ul.nav-menu,
+ul.footer-element {
   list-style-type: none; /* removes bullets */
   margin: 0;
   padding: 0;
   font-family: "Poppins", "sans-serif";
   font-weight: 700;
-  color: #eee;
+  color: #666;
 }
 
-ul.footer-cols {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-}
-
-.nav-text li {
+.nav-menu li,
+.footer-element li {
   display: inline;
   padding-right: 1.5rem;
 }
 
-.nav-text footer-col-two {
-  flex: 0 0 100%;
+.footer-element-small {
+  font-family: "Poppins", "sans-serif";
+  font-size: 1em;
 }
 
-.nav-text footer-col-one {
-  flex: 0 0 50%;
-  align-self: flex-start;
+.footer-element-small a {
+  font-family: "Poppins", "sans-serif";
+  font-size: 0.75em;
+  color: #606060;
 }
 
 /* mobile */
 @media only screen and (max-width: 400px) {
+  .width-header {
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0;
+  }
+
   .width {
     margin: 0 auto;
     padding: 0.75rem 2rem;
@@ -124,15 +150,30 @@ ul.footer-cols {
   }
 }
 
-/* tablet */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
+  .width-header {
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0;
+  }
+
   .width {
     margin: 0 auto;
     padding: 0.75rem 2rem;
   }
 }
 
+/* tablet */
+
 @media only screen and (min-width: 601px) and (max-width: 960px) {
+  .width-header {
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0;
+  }
+
   .width {
     width: 75vw;
     margin: 0 auto;
@@ -142,6 +183,13 @@ ul.footer-cols {
 
 /* desktop */
 @media only screen and (min-width: 961px) {
+  .width-header {
+    width: 65vw;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0;
+  }
   .width {
     width: 50vw;
     margin: 0 auto;
@@ -151,7 +199,7 @@ ul.footer-cols {
 
 @media only screen and (min-width: 401px) and (max-width: 1200px) {
   h1 {
-    font-size: 3.25em;
+    font-size: 3em;
     line-height: 1.15;
   }
 }
