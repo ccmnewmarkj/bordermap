@@ -156,6 +156,10 @@ ul.footer-element {
     margin: 0 auto;
     padding: 0.75rem 2rem;
   }
+
+  body {
+    background-color: lightblue;
+  }
 }
 
 @media only screen and (min-width: 601px) and (max-width: 960px) and (-webkit-min-device-pixel-ratio: 1) and (-webkit-min-device-pixel-ratio: 2) {
@@ -168,6 +172,10 @@ ul.footer-element {
     width: 75vw;
     margin: 0 auto;
     padding: 0.75rem 1rem;
+  }
+
+  body {
+    background-color: blue;
   }
 }
 
