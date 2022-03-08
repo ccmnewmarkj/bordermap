@@ -129,7 +129,6 @@ ul.footer-element {
   color: #606060;
 }
 
-/* mobile */
 @media only screen and (max-width: 400px) {
   .width-header {
     margin: 0 auto;
@@ -157,11 +156,9 @@ ul.footer-element {
 
   .width {
     margin: 0 auto;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 0;
   }
 }
-
-/* tablet */
 
 @media only screen and (min-width: 601px) and (max-width: 960px) {
   .width-header {
@@ -176,7 +173,6 @@ ul.footer-element {
   }
 }
 
-/* desktop */
 @media only screen and (min-width: 961px) {
   .width-header {
     width: 65vw;
@@ -194,5 +190,13 @@ ul.footer-element {
   h1 {
     font-size: 3em;
     line-height: 1.15;
+  }
+}
+
+@media only screen and (orientation: landscape) {
+  .width {
+    width: 75vw;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
   }
 }
