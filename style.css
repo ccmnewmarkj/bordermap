@@ -132,9 +132,7 @@ ul.footer-element {
 @media only screen and (max-width: 400px) {
   .width-header {
     margin: 0 auto;
-    padding-top: 1.5rem;
-    padding-bottom: 0.9rem;
-    padding-left: 0;
+    padding: 1.5rem 0 0.9rem;
   }
 
   .width {
@@ -144,7 +142,7 @@ ul.footer-element {
 
   h1 {
     font-size: 2.5em;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 }
 
@@ -156,14 +154,14 @@ ul.footer-element {
 
   .width {
     margin: 0 auto;
-    padding: 0.75rem 0;
+    padding: 0.75rem 2rem;
   }
 }
 
-@media only screen and (min-width: 601px) and (max-width: 960px) {
+@media only screen and (min-width: 601px) and (max-width: 960px) and (-webkit-min-device-pixel-ratio: 1) and (-webkit-min-device-pixel-ratio: 2) {
   .width-header {
     margin: 0 auto;
-    padding: 1.5rem 0 0.9rem;
+    padding: 1.5rem 2rem 0.9rem;
   }
 
   .width {
@@ -190,13 +188,5 @@ ul.footer-element {
   h1 {
     font-size: 3em;
     line-height: 1.15;
-  }
-}
-
-@media only screen and (orientation: landscape) {
-  .width {
-    width: 75vw;
-    margin: 0 auto;
-    padding: 0.75rem 1rem;
   }
 }
