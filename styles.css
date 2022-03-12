@@ -7,7 +7,7 @@
 
   --clr-header-bg: #f5f5f5;
   --clr-body-bg: #f8f8f8;
-  --clr-body-link: #fe8807;
+  --clr-body-link: #ea7800;
   --clr-body-box: #fff;
 
   --ff-title: "Poppins", sans-serif;
@@ -20,6 +20,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
