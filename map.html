@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Black Media Map | Center for Community Media</title>
+    <title>Border Media Map | Center for Community Media</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 
@@ -18,13 +18,7 @@
     />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");
-      /* @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;600&display=swap"); */
-      /* @import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;700&display=swap"); */
-      /* @import url("https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;1,400&display=swap"); */
-      /* @import url("https://fonts.googleapis.com/css2?family=Prata&display=swap"); */
-      /* @import url("https://fonts.googleapis.com/css2?family=Domine:wght@400;700&display=swap"); */
       @import url("https://fonts.googleapis.com/css2?family=Rufina:wght@400;700&display=swap");
-      /* @import url("https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,300;0,400;0,700;1,400&display=swap"); */
 
       body {
         margin: 0;
@@ -64,7 +58,7 @@
       }
 
       .mapboxgl-popup-content .outlet {
-        background: #2d2926;
+        background: #1b4332;
         color: #ff8200;
         margin: 0;
         display: block;
@@ -75,7 +69,7 @@
       }
 
       .mapboxgl-popup-content .outlet-info {
-        background: #fff;
+        background: #f9f6e0; /* #fefae0; */
         margin: 0;
         display: block;
         padding: 10px 20px;
@@ -108,7 +102,7 @@
       }
 
       .mapboxgl-popup-content .bottom {
-        background: #2d2926;
+        background: #1b4332;
         margin: 0;
         display: block;
         height: 4px;
@@ -135,15 +129,15 @@
       }
 
       .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
-        border-bottom-color: #2d2926;
+        border-bottom-color: #1b4332;
       }
 
       .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-        border-top-color: #2d2926;
+        border-top-color: #1b4332;
       }
 
       .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
-        border-bottom-color: #2d2926;
+        border-bottom-color: #1b4332;
       }
 
       .geocoder {
@@ -181,7 +175,7 @@
   <body>
     <!--
       Code source: https://www.mapbox.com/impact-tools/sheet-mapper
-      Basemap: https://blog.mapbox.com/designing-moonlight-a-new-custom-map-d25afec2cc6e
+      Basemap: https://blog.mapbox.com/designing-north-star-c8574e299c94?gi=b66978bad2b0
     -->
     <div id="map"></div>
     <button type="button" class="reset-zoom" onClick="reCenterMap()">RESET ZOOM</button>
@@ -195,12 +189,12 @@
         }
       }
 
-      mapboxgl.accessToken = "pk.eyJ1IjoiamNjY20iLCJhIjoiY2wwMG1wanFrMDYzdTNrcGhtcDg4MXlzZyJ9.7xxGLWAu72x0_vKWTYJFJw"
+      mapboxgl.accessToken = "pk.eyJ1IjoiamNjY20iLCJhIjoiY2wwMG12MW01MGxvcDNjdGZmZzgyZjJsaSJ9.2UogOC6pSvkLGZN721jhYQ"
       const map = new mapboxgl.Map({
         container: "map",
-        style: "mapbox://styles/jcccm/cl01j7waj001215quv3w9wwrr",
-        center: [-98.579, 38.828],
-        zoom: 4,
+        style: "mapbox://styles/jcccm/cl0200vp1001715r3zo818xuz",
+        center: [-105.27193, 30.9308],
+        zoom: 5,
         maxZoom: 13,
         transformRequest: transformRequest,
       })
@@ -208,7 +202,7 @@
       $(document).ready(function () {
         $.ajax({
           type: "GET",
-          url: "https://docs.google.com/spreadsheets/d/1uvy43lqhO2lnEoUJiUwV4NSUqWL77fbjWYof35FbRp8/gviz/tq?tqx=out:csv&sheet=directory",
+          url: "https://docs.google.com/spreadsheets/d/1TlP2xjc7cR5v-TQy6fSaO4NLG8oGsxkfMlAV9uBn-mw/gviz/tq?tqx=out:csv&sheet=Sheet1",
           dataType: "text",
           success: function (csvData) {
             makeGeoJSON(csvData)
@@ -257,6 +251,7 @@
                   },
                 })
 
+                // https://coolors.co/palette/797d62-9b9b7a-d9ae94-f1dca7-ffcb69-d08c60-997b66
                 map.addLayer({
                   id: "unclustered-point",
                   type: "circle",
@@ -267,15 +262,13 @@
                       "match",
                       ["get", "Type for Color"],
                       "Newspaper",
-                      "#F25F5C",
+                      "#797D62",
                       "Digital",
-                      "#FFC600",
-                      "Radio/Podcast",
-                      "#247BA0",
+                      "#D08C60",
+                      "Radio",
+                      "#FFCB69",
                       "TV",
-                      "#70C1B3",
-                      "Magazine",
-                      "#8267BE",
+                      "#997B66",
                       "#50514F",
                     ],
                     "circle-radius": 7,
@@ -304,9 +297,9 @@
                 map.on("click", "unclustered-point", e => {
                   const coordinates = e.features[0].geometry.coordinates.slice()
 
-                  const website = e.features[0].properties["URL"]
-                    ? `<a href='` + e.features[0].properties["URL"] + `' target='_blank'>Website</a>`
-                    : `<span style='color:gray;'>Website unknown</span>`
+                  const website = e.features[0].properties["Website"]
+                    ? `<a href='` + e.features[0].properties["Website"] + `' target='_blank'>Website</a>`
+                    : `<span style='color:gray;'>Website NA</span>`
 
                   const location =
                     e.features[0].properties["Approximate Location Only"] === "yes"
@@ -314,7 +307,7 @@
                       : `<span style="display: none;"></span>`
 
                   const city = e.features[0].properties["City"]
-                    ? e.features[0].properties["City"]
+                    ? e.features[0].properties["City"] + ", " + e.features[0].properties["State"]
                     : `<span style="display: none;"></span>`
 
                   const notes = e.features[0].properties["Notes"]
@@ -323,17 +316,17 @@
 
                   const description =
                     `<div class="outlet">` +
-                    e.features[0].properties.Outlet +
+                    e.features[0].properties[`MAP: Media Outlet`] +
                     `<br />` +
                     `<div class="city">${city}</div>
-                    <div class="location">${location}</div>
-                    </div>` +
+              <div class="location">${location}</div>
+              </div>` +
                     `<div class="outlet-info">` +
                     `<ul><li style="list-style-type: '📍 '">` +
-                    e.features[0].properties["Media Type"] +
-                    `</li><li style="list-style-type: '🧑🏾 '">` +
-                    e.features[0].properties["Audience: City/region"] +
-                    `</li><li style="list-style-type: '🌍 '"> ${website}</li></ul></div>${notes}<div class="bottom"></div>`
+                    e.features[0].properties["Format"] +
+                    `</li><li style="list-style-type: '🗣️ '">` +
+                    e.features[0].properties["Language"] +
+                    `</li><li style="list-style-type: '🌍 '">${website}</li></ul></div>${notes}<div class="bottom"></div>`
 
                   // Ensure that if the map is zoomed out such that
                   // multiple copies of the feature are visible, the
@@ -382,15 +375,8 @@
 
       // recenter map
       const reCenterMap = () => {
-        map.flyTo({ center: [-98.579, 39.128], zoom: 4 })
+        map.flyTo({ center: [-105.27193, 30.9308], zoom: 4 })
       }
-
-      // if (document.getElementById("fullscreen").length) {
-      //   alert("Element exists")
-      // } else {
-      //   document.querySelector("reset-zoom").style.color = "red"
-      //   //alert("Element does not exist")
-      // }
 
       // disable map zoom when scrolling
       map.scrollZoom.disable()
