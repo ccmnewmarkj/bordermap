@@ -1,5 +1,7 @@
 # CCM Border Media Map
 
+This map of U.S. media outlets serving communities along the U.S.-Mexico border accompanies the Border Media Directory, a project of the [Center for Community Media](https://www.journalism.cuny.edu/centers/center-community-media/) at the Craig Newmark Graduate School of Journalism at CUNY.
+
 🗺️ **[View the map](https://ccmnewmarkj.github.io/bordermap/)**
 
 **Sources**
