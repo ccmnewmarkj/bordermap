@@ -69,7 +69,7 @@
       }
 
       .mapboxgl-popup-content .outlet-info {
-        background: #f9f6e0; /* #fefae0; */
+        background-color: #f9f6e0; /* #fefae0; */
         margin: 0;
         display: block;
         padding: 10px 20px;
@@ -94,6 +94,7 @@
       }
 
       .mapboxgl-popup-content .notes {
+        background-color: #f9f6e0;
         color: #888888;
         font-size: 0.9em;
         font-weight: 600;
@@ -102,7 +103,7 @@
       }
 
       .mapboxgl-popup-content .bottom {
-        background: #1b4332;
+        background-color: #1b4332;
         margin: 0;
         display: block;
         height: 4px;
@@ -115,9 +116,10 @@
       }
 
       hr {
+        margin-top: 0;
         border: 0;
         height: 1px;
-        background: #d6d6d6;
+        background-color: #d6d6d6;
       }
 
       .mapboxgl-container {
@@ -375,7 +377,7 @@
 
       // recenter map
       const reCenterMap = () => {
-        map.flyTo({ center: [-105.27193, 30.9308], zoom: 4 })
+        map.flyTo({ center: [-105.27193, 30.9308], zoom: 5 })
       }
 
       // disable map zoom when scrolling
